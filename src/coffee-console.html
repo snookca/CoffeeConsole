@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title></title>
+    <meta charset="UTF-8">
+    <title></title>
     <script src="jquery-1.7.1.min.js"></script>
     <script src="coffee-script.js"></script>
     <style>
@@ -20,7 +20,7 @@
             top: 0;
             bottom: 0;
             right: 0;
-            left: 50%;   
+            left: 50%;
         }
         #runcc {
             position: fixed;
@@ -44,23 +44,31 @@
 
 var editor = ace.edit("cc-editor");
 editor.setTheme("ace/theme/twilight");
-editor.getSession().setMode("ace/mode/coffee");
+editor.session.setMode("ace/mode/coffee");
 editor.setShowPrintMargin(false);
 
 var compiled = ace.edit("cc-results");
 compiled.setTheme("ace/theme/twilight");
-compiled.getSession().setMode("ace/mode/javascript");
+compiled.session.setMode("ace/mode/javascript");
 compiled.setShowPrintMargin(false);
 
-$(document.body).keydown(function(e){
-    var compiledSource = CoffeeScript.compile( editor.getSession().getValue(), {bare:true});
-    compiled.getSession().setValue(compiledSource);
-
-    if (e.which == 13 && (e.metaKey || e.shiftKey)) {
-        e.preventDefault();
-        compileIt();
-    } 
+schedule = function(fn, timeout) {
+    if (fn.$timer) return;
+    fn.$timer = setTimeout(function() {fn.$timer = null; fn()}, timeout || 10);
+}
+editor.on("change", function(e){
+    schedule(update, 20);
 })
+function update(){
+    var compiledSource = CoffeeScript.compile( editor.session.getValue(), {bare:true});
+    compiled.session.setValue(compiledSource);
+}
+editor.commands.addCommand({
+    name: "compileIt",
+    exec: compileIt,
+    bindKey: "Ctrl-Return|Command-Return|Shift-Return"
+})
+
 $('#runcc').click(compileIt);
 function compileIt(){
     chrome.devtools.inspectedWindow.eval( compiled.getSession().getValue(), function(result, isException) { });
