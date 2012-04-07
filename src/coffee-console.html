@@ -68,13 +68,9 @@ editor.commands.addCommand({
     bindKey: "Ctrl-Return|Command-Return|Shift-Return"
 })
 
-document.getElementById('runcc').addEventListener('click', clickIt);
+document.getElementById('runcc').addEventListener('click', compileIt);
 function compileIt(){
-    chrome.devtools.inspectedWindow.eval(
-        'try{'
-            + 'console.log(eval('+ JSON.stringify(compiled.session.getValue()) + "))"
-        + "}catch(e){ console.error(e)}"
-    , function(result, isException) {});
+    chrome.devtools.inspectedWindow.eval( compiled.session.getValue(), function(result, isException) {});
 }
 </script>
 
