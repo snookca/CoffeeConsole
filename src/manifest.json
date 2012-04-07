@@ -1,6 +1,6 @@
 {
 	"name": "CoffeeConsole",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"description": "A CoffeeScript console within the Web Inspector.",
 	"devtools_page": "coffee.html",
     "icons": { "128": "128.png" },
