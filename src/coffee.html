@@ -8,8 +8,11 @@
                 "CoffeeConsole",
                 "badge.png",
                 "coffee-console.html",
-                function cb(panel) {}
+                function cb(panel) {
+                    panel.onShown.addListener(function(win){ win.focus(); });
+                }
             );
         </script>
     </body>
 </html>
+
