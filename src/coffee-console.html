@@ -7,17 +7,24 @@
     <script src="coffee-script.js"></script>
     <style>
         #cc-editor {
-            position:fixed;
+            position: fixed;
             top: 0;
-            bottom:0;
-            right:0;
+            bottom: 0;
+            right: 50%;
             left: 0;
             z-index: 1;
             background-color:#EEE;
         }
+        #cc-results {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 50%;   
+        }
         #runcc {
-            position:fixed;
-            right:10px;
+            position: fixed;
+            right: 10px;
             bottom: 10px;
             z-index: 2;
         }
@@ -31,6 +38,7 @@
 
 <script src="ace/ace-noconflict.js" type="text/javascript" charset="utf-8"></script>
 <script src="ace/mode-coffee-noconflict.js" type="text/javascript" charset="utf-8"></script>
+<script src="ace/mode-javascript-noconflict.js" type="text/javascript" charset="utf-8"></script>
 <script src="ace/theme-twilight-noconflict.js" type="text/javascript" charset="utf-8"></script>
 <script>
 
@@ -39,7 +47,15 @@ editor.setTheme("ace/theme/twilight");
 editor.getSession().setMode("ace/mode/coffee");
 editor.setShowPrintMargin(false);
 
+var compiled = ace.edit("cc-results");
+compiled.setTheme("ace/theme/twilight");
+compiled.getSession().setMode("ace/mode/javascript");
+compiled.setShowPrintMargin(false);
+
 $(document.body).keydown(function(e){
+    var compiledSource = CoffeeScript.compile( editor.getSession().getValue(), {bare:true});
+    compiled.getSession().setValue(compiledSource);
+
     if (e.which == 13 && (e.metaKey || e.shiftKey)) {
         e.preventDefault();
         compileIt();
@@ -47,8 +63,7 @@ $(document.body).keydown(function(e){
 })
 $('#runcc').click(compileIt);
 function compileIt(){
-    var compiledSource = CoffeeScript.compile( editor.getSession().getValue(), {bare:true})
-    chrome.devtools.inspectedWindow.eval( compiledSource, function(result, isException) { });
+    chrome.devtools.inspectedWindow.eval( compiled.getSession().getValue(), function(result, isException) { });
 }
 </script>
 
