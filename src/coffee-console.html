@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+    <script src="jquery-1.7.1.min.js"></script>
+    <script src="coffee-script.js"></script>
+    <style>
+        #cc-editor {
+            position:fixed;
+            top: 0;
+            bottom:0;
+            right:0;
+            left: 0;
+            z-index: 1;
+            background-color:#EEE;
+        }
+        #runcc {
+            position:fixed;
+            right:10px;
+            bottom: 10px;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div id="cc-editor"></div>
+    <div id="cc-results"></div>
+    <div id="error"></div>
+    <button id="runcc">Run</button>
+
+<script src="ace/ace-noconflict.js" type="text/javascript" charset="utf-8"></script>
+<script src="ace/mode-coffee-noconflict.js" type="text/javascript" charset="utf-8"></script>
+<script src="ace/theme-twilight-noconflict.js" type="text/javascript" charset="utf-8"></script>
+<script>
+
+var editor = ace.edit("cc-editor");
+editor.setTheme("ace/theme/twilight");
+editor.getSession().setMode("ace/mode/coffee");
+editor.setShowPrintMargin(false);
+
+$(document.body).keydown(function(e){
+    if (e.which == 13 && (e.metaKey || e.shiftKey)) {
+        e.preventDefault();
+        compileIt();
+    } 
+})
+$('#runcc').click(compileIt);
+function compileIt(){
+    var compiledSource = CoffeeScript.compile( editor.getSession().getValue(), {bare:true})
+    chrome.devtools.inspectedWindow.eval( compiledSource, function(result, isException) { });
+}
+</script>
+
+</body>
+</html>
