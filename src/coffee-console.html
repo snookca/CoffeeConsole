@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <script src="jquery-1.7.1.min.js"></script>
     <script src="coffee-script.js"></script>
     <style>
         #cc-editor {
@@ -69,7 +68,7 @@ editor.commands.addCommand({
     bindKey: "Ctrl-Return|Command-Return|Shift-Return"
 })
 
-$('#runcc').click(compileIt);
+document.getElementById('runcc').addEventListener('click', clickIt);
 function compileIt(){
     chrome.devtools.inspectedWindow.eval(
         'try{'
