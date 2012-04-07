@@ -71,7 +71,11 @@ editor.commands.addCommand({
 
 $('#runcc').click(compileIt);
 function compileIt(){
-    chrome.devtools.inspectedWindow.eval( compiled.getSession().getValue(), function(result, isException) { });
+    chrome.devtools.inspectedWindow.eval(
+        'try{'
+            + 'console.log(eval('+ JSON.stringify(compiled.session.getValue()) + "))"
+        + "}catch(e){ console.error(e)}"
+    , function(result, isException) {});
 }
 </script>
 
