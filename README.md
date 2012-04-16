@@ -12,6 +12,7 @@ Features
    * Syntax highlighting provided via the ACE editor http://ace.ajax.org/
    * CoffeeScript compilation https://github.com/jashkenas/coffee-script
    * Command+Enter or Shift+Enter to run the current script
+   * Available in the Chrome Web Store: http://snk.ms/coffeeconsole
 
 Copyright 2012, Jonathan Snook
 Released under the MIT License
