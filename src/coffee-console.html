@@ -68,11 +68,15 @@ var err = document.getElementById('error');
 var editor = ace.edit("cc-editor");
 editor.setTheme("ace/theme/twilight");
 editor.session.setMode("ace/mode/coffee");
+editor.session.setUseSoftTabs(true);
+editor.session.setTabSize(2);
 editor.setShowPrintMargin(false);
 
 var compiled = ace.edit("cc-results");
 compiled.setTheme("ace/theme/twilight");
 compiled.session.setMode("ace/mode/javascript");
+compiled.session.setUseSoftTabs(true);
+compiled.session.setTabSize(2);
 compiled.setShowPrintMargin(false);
 
 
@@ -87,9 +91,9 @@ function update(){
         err.className = 'is-hidden';
     } catch (error) {
         err.className = '';
-        err.innerHTML = error.message; 
+        err.innerHTML = error.message;
     }
-    localStorage.setItem("state" + tabId, editor.session.getValue()); 
+    localStorage.setItem("state" + tabId, editor.session.getValue());
 }
 
 schedule = function(fn, timeout) {
@@ -111,7 +115,7 @@ editor.commands.addCommand(compileOptions);
 compiled.commands.addCommand(compileOptions);
 
 document.getElementById('runcc').addEventListener('click', compileIt);
-editor.session.setValue(localStorage.getItem("state" + tabId)); 
+editor.session.setValue(localStorage.getItem("state" + tabId));
 schedule(function(){ editor.focus() }, 20);
 
 </script>
